@@ -1,0 +1,16 @@
+{
+  "name": "VotingApp",
+  "image": "mcr.microsoft.com/devcontainers/java:17",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker": {
+      "moby": false
+    }
+  },
+  "forwardPorts": [8080],
+  "portsAttributes": {
+    "8080": {
+      "label": "Spring Boot App",
+      "onAutoForward": "notify"
+    }
+  }
+}
