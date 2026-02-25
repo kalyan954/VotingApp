@@ -9,6 +9,21 @@ url: https://swapnilbamble1438.github.io/VotingApplication/
 ### Application Features:
 - User can vote the Candidate.
 - Admin has the permission to see the vote details.
+- Email confirmation is sent to the user after a successful vote.
+
+### Email Notification Setup:
+The application sends a confirmation email when a vote is recorded. Configure SMTP
+credentials via environment variables or `application.properties`:
+
+| Property | Env Variable | Default |
+|---|---|---|
+| `spring.mail.host` | — | `smtp.gmail.com` |
+| `spring.mail.port` | — | `587` |
+| `spring.mail.username` | `MAIL_USERNAME` | `noreply@votingapp.com` |
+| `spring.mail.password` | `MAIL_PASSWORD` | `changeme` |
+
+The email includes the voter's email, the candidate voted for, and a timestamp.
+Email sending is asynchronous — failures are logged but do not block the vote.
 
 ### Technology used in this Project: 
 - i) Thymeleaf,CSS : designing page layout. 

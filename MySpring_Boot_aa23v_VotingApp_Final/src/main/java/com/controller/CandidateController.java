@@ -19,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.model.Candidate;
 import com.service.CandidateService;
+import com.service.NotificationService;
 import com.service.VotingService;
 import com.service.VotingService.VoteResult;
 
@@ -34,6 +35,9 @@ public class CandidateController {
 
 	@Autowired
 	private VotingService votingServ;
+
+	@Autowired
+	private NotificationService notificationServ;
 
 	@GetMapping("/candidates")
 	@ResponseBody
@@ -67,6 +71,7 @@ public class CandidateController {
 					break;
 				case SUCCESS:
 					redirectAttributes.addFlashAttribute("vmsg", result.getMessage());
+					notificationServ.sendVoteConfirmation(p.getName(), candidate);
 					break;
 			}
 		}
