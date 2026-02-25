@@ -66,7 +66,6 @@ public class CandidateController {
 		}
 
 		if (user.getStatus() != null) {
-			// Already voted — redirect without error
 			return "redirect:/user";
 		}
 
