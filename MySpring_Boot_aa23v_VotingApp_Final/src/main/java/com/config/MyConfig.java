@@ -6,41 +6,41 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
 public class MyConfig {
-	
+
 	@Autowired
 	private AuthenticationSuccessHandler customSuccessHandler;
-	
-	
+
 	@Bean
-	public UserDetailsService getUserDetailsService()
+	public UserDetailsServiceImpl userDetailsServiceImpl()
 	{
 		return new UserDetailsServiceImpl();
 	}
-	
-	@Bean 
+
+	@Bean
+	@SuppressWarnings("deprecation")
 	public PasswordEncoder passwordEncoder()
 	{
 		return NoOpPasswordEncoder.getInstance();
 	}
-	
+
 	@Bean
 	public DaoAuthenticationProvider authenticationProvider()
 	{
 		DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-		daoAuthenticationProvider.setUserDetailsService(this.getUserDetailsService());
+		daoAuthenticationProvider.setUserDetailsService(userDetailsServiceImpl());
 		daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
 		return daoAuthenticationProvider;
 	}
-	
+
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception
 	{
@@ -57,12 +57,11 @@ public class MyConfig {
 				.successHandler(customSuccessHandler)
 			)
 			.logout(logout -> logout
-				.logoutRequestMatcher(new org.springframework.security.web.util.matcher.AntPathRequestMatcher("/logout"))
+				.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
 				.logoutSuccessUrl("/signin?logout")
 			);
-		
+
 		return http.build();
 	}
-	
 
 }

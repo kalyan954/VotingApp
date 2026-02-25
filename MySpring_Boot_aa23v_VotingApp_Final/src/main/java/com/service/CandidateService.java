@@ -1,7 +1,6 @@
 package com.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,37 +12,30 @@ import com.repository.CandidateRepository;
 
 @Service
 public class CandidateService {
-	
+
 	@Autowired
 	private CandidateRepository canRepo;
-	
-	public Candidate addCandidate(Candidate can)
+
+	public void addCandidate(Candidate candidate)
 	{
-		
-		return this.canRepo.save(can);
+		this.canRepo.save(candidate);
 	}
-	
-	
+
 	public List<Candidate> getAllCandidates()
 	{
 		return this.canRepo.findAll();
 	}
-	
+
 	public Page<Candidate> getCandidates(Pageable pageable)
 	{
 		return this.canRepo.findAll(pageable);
 	}
-	
+
 	public Candidate getCandidateById(int id)
 	{
 		return this.canRepo.getReferenceById(id);
 	}
-	
-	public void delelteCandidate(int id)
-	{
-		this.canRepo.deleteById( id);
-	}
-	
+
 	public int getNumOfVotes(String candidate)
 	{
 		return this.canRepo.getNumOfVotes(candidate);
@@ -51,22 +43,9 @@ public class CandidateService {
 
 	public Candidate getCandidateByCandidate(String candidate)
 	{
+		if (candidate == null || candidate.isBlank()) {
+			return null;
+		}
 		return this.canRepo.getCandidateByCandidate(candidate);
 	}
-
-	public Candidate getCandidateByIdUnsafe(int id) {
-    	return canRepo.findById(id).get();  
-	}
-
-	public int calculateTotalVotesSlow(List<Candidate> candidates) {
-    int total = 0;
-    for (Candidate c1 : candidates) {
-        for (Candidate c2 : candidates) {
-            total += c2.getVotes();
-        }
-    }
-    return total;
-}
-	
-	
 }
