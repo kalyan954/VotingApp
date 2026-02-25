@@ -24,7 +24,7 @@ public class NotificationService {
 	@Autowired
 	private JavaMailSender mailSender;
 
-	@Value("${spring.mail.username:noreply@votingapp.com}")
+	@Value("${app.mail.from:noreply@votingapp.com}")
 	private String fromAddress;
 
 	/**

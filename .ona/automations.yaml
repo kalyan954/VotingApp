@@ -27,6 +27,24 @@ tasks:
     triggeredBy:
       - postDevcontainerStart
 
+  start-mailhog:
+    name: Start MailHog
+    description: Start MailHog SMTP test server (SMTP 1025, Web UI 8025).
+    command: |
+      if curl -sf http://localhost:8025/ > /dev/null 2>&1; then
+        echo "MailHog is already running."
+        exit 0
+      fi
+      docker rm -f mailhog 2>/dev/null || true
+      docker run -d --name mailhog --network host mailhog/mailhog
+      echo "Waiting for MailHog..."
+      until curl -sf http://localhost:8025/ > /dev/null 2>&1; do
+        sleep 1
+      done
+      echo "MailHog is ready."
+    triggeredBy:
+      - postDevcontainerStart
+
   install-deps:
     name: Install dependencies
     description: Download Maven dependencies for the Spring Boot project.
