@@ -1,0 +1,43 @@
+tasks:
+  start-mysql:
+    name: Start MySQL
+    description: Start a MySQL 8 container with the database the app expects.
+    command: |
+      docker rm -f mysql-votingapp 2>/dev/null || true
+      docker run -d \
+        --name mysql-votingapp \
+        -e MYSQL_ROOT_PASSWORD=root \
+        -e MYSQL_DATABASE=zinterview \
+        -p 3306:3306 \
+        mysql:8.0
+      echo "Waiting for MySQL to be ready..."
+      until docker exec mysql-votingapp mysqladmin ping -h localhost -uroot -proot --silent 2>/dev/null; do
+        sleep 2
+      done
+      echo "MySQL is ready."
+    triggeredBy:
+      - postDevcontainerStart
+
+  install-deps:
+    name: Install dependencies
+    description: Download Maven dependencies for the Spring Boot project.
+    command: |
+      cd MySpring_Boot_aa23v_VotingApp_Final
+      chmod +x mvnw
+      ./mvnw dependency:resolve -q
+    triggeredBy:
+      - postDevcontainerStart
+    dependsOn:
+      - start-mysql
+
+services:
+  spring-boot-app:
+    name: Spring Boot App
+    description: Run the VotingApp Spring Boot dev server on port 8080.
+    commands:
+      start: |
+        cd MySpring_Boot_aa23v_VotingApp_Final
+        chmod +x mvnw
+        ./mvnw spring-boot:run
+      ready: |
+        curl -sf http://localhost:8080 || curl -sf -o /dev/null -w "%{http_code}" http://localhost:8080 | grep -q "302\|200\|401\|403"

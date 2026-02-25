@@ -55,11 +55,11 @@
 									<th>Status.: </th>
 									<th>
 										
-										<div th:if=${user.status}>
+										<div th:if="${user.status}">
 											 <h4 th:text="${user.status}"></h4> 
 								   		</div>
 								   		
-								   		<div th:unless=${user.status}>
+								   		<div th:unless="${user.status}">
 								   			 <h4>Not Voted</h4>
 								   		</div>
 									
@@ -82,12 +82,12 @@
 
 
 
-		<div th:if=${session.vmsg}>
-			 <h3 th:text="${session.vmsg}" style="color:green"></h3>
+		<div th:if="${vmsg}">
+			 <h3 th:text="${vmsg}" style="color:green"></h3>
    		</div>
    		
-   		<div th:unless=${session.vmsg}>
-   			<div th:if=${user.status}>
+   		<div th:unless="${vmsg}">
+   			<div th:if="${user.status}">
 			 <h2 style="color:green"> You are already <span th:text="${user.status}">Title</span> </h2> 
    			</div>
    		</div>
@@ -95,7 +95,7 @@
    		
    		
    		 
-		<div th:unless=${user.status}>
+		<div th:unless="${user.status}">
 
 			<input th:value="${user.email}" name = "email" type="hidden" >
 		 	<br>

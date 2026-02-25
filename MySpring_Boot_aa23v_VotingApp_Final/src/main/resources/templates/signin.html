@@ -11,8 +11,8 @@
 			 
 <h1>Login</h1>
 
-<div th:if=${session.vmsg}>
-			 <th:block th:text="${#session.removeAttribute('vmsg')}"></th:block>
+<div th:if="${vmsg}">
+			 <h3 th:text="${vmsg}" style="color:green"></h3>
    		</div>
 
 <div th:if="${param.error}" style="color:red">
