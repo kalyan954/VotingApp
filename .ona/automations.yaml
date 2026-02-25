@@ -3,11 +3,20 @@ tasks:
     name: Start MySQL
     description: Start a MySQL 8 container with the database the app expects.
     command: |
+      # Reuse running container if healthy
+      if docker exec mysql-votingapp mysqladmin ping -h localhost -uroot -proot --silent 2>/dev/null; then
+        echo "MySQL is already running."
+        exit 0
+      fi
+      # Remove stale container if present
       docker rm -f mysql-votingapp 2>/dev/null || true
+      # Persist data in workspace so it survives restarts
+      mkdir -p /workspaces/VotingApp/.mysql-data
       docker run -d \
         --name mysql-votingapp \
         -e MYSQL_ROOT_PASSWORD=root \
         -e MYSQL_DATABASE=zinterview \
+        -v /workspaces/VotingApp/.mysql-data:/var/lib/mysql \
         -p 3306:3306 \
         mysql:8.0
       echo "Waiting for MySQL to be ready..."
