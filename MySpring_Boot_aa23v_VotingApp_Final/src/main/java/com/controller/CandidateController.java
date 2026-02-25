@@ -31,12 +31,22 @@ public class CandidateController {
 		String email = p.getName();
 		User user = userServ.getUserByEmail(email);
 	
+		if(user == null)
+		{
+			redirectAttributes.addFlashAttribute("vmsg", "User not found for email: " + email);
+			return "redirect:/user";
+		}
 		
 		if(user.getStatus() == null)
 		{
 			try {
 				// add a vote to the selectedCandidate
 				Candidate selectedCan = canServ.getCandidateByCandidate(candidate);
+				if(selectedCan == null)
+				{
+					redirectAttributes.addFlashAttribute("vmsg", "Candidate not found: " + candidate);
+					return "redirect:/user";
+				}
 				selectedCan.setVotes(selectedCan.getVotes() + 1);
 				canServ.addCandidate(selectedCan); // update candidate
 				
