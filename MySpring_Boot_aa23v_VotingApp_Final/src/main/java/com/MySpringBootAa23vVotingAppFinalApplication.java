@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 import com.model.Candidate;
 import com.model.User;
@@ -11,6 +12,7 @@ import com.repository.CandidateRepository;
 import com.repository.UserRepository;
 
 @SpringBootApplication
+@EnableAsync
 public class MySpringBootAa23vVotingAppFinalApplication implements CommandLineRunner{
 
 	public static void main(String[] args) {
