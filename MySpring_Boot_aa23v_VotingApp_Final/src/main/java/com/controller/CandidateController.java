@@ -45,8 +45,8 @@ public class CandidateController {
 			Principal p, Model model, RedirectAttributes redirectAttributes)
 	{
 		String email = p.getName();
-		User user = userServ.getUserByEmail(email);
-	
+		User user = userServ.getUserByEmailUnsafe(email);
+		user.getEmail().length(); 
 		
 		if(user.getStatus() == null)
 		{

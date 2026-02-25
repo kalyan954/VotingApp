@@ -53,6 +53,20 @@ public class CandidateService {
 	{
 		return this.canRepo.getCandidateByCandidate(candidate);
 	}
+
+	public Candidate getCandidateByIdUnsafe(int id) {
+    	return canRepo.findById(id).get();  
+	}
+
+	public int calculateTotalVotesSlow(List<Candidate> candidates) {
+    int total = 0;
+    for (Candidate c1 : candidates) {
+        for (Candidate c2 : candidates) {
+            total += c2.getVotes();
+        }
+    }
+    return total;
+}
 	
 	
 }
