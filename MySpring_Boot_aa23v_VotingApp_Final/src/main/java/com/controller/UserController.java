@@ -2,8 +2,6 @@ package com.controller;
 
 import java.security.Principal;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.model.User;
 import com.service.UserService;
@@ -22,20 +21,20 @@ public class UserController {
 	private UserService userServ;
 	
 	@PostMapping("/createuser")
-	public String createUser(@ModelAttribute User user, HttpSession session)
+	public String createUser(@ModelAttribute User user, RedirectAttributes redirectAttributes)
 	{
 		String email = user.getEmail();
 		
 		if(userServ.getUserByEmail(email) != null)
 		{
-			session.setAttribute("fail", "Registration Failed, Please try different Email Id");
+			redirectAttributes.addFlashAttribute("fail", "Registration Failed, Please try different Email Id");
 			
 			return "redirect:/register";
 		}
 		else{
 			 
 			userServ.addUser(user);
-			session.setAttribute("msg", "Registration successful");
+			redirectAttributes.addFlashAttribute("msg", "Registration successful");
 			return "redirect:/register";
 		}
 		

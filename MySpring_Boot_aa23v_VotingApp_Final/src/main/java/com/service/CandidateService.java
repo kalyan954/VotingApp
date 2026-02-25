@@ -29,7 +29,7 @@ public class CandidateService {
 	
 	public Candidate getCandidateById(int id)
 	{
-		return this.canRepo.getById(id);
+		return this.canRepo.getReferenceById(id);
 	}
 	
 	public void delelteCandidate(int id)

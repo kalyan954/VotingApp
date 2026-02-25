@@ -34,7 +34,7 @@ public class UserService {
 	
 	public User getUserById(int id)
 	{
-		return this.userRepo.getById(id);
+		return this.userRepo.getReferenceById(id);
 	}
 	
 	public void deleteUser(int id)

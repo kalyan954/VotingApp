@@ -26,37 +26,42 @@ public class MySpringBootAa23vVotingAppFinalApplication implements CommandLineRu
 	@Override
 	public void run(String... args) throws Exception {
 	
-		// Admin
-		User admin = new User();
-		admin.setId(1);
-		admin.setEmail("admin");
-		admin.setName("admin");
-		admin.setPassword("admin");
-		admin.setPhone("1234");
-		admin.setRole("ROLE_ADMIN");
-		admin.setStatus("admin");
-		userRepo.save(admin);
+		// Seed admin if not already present
+		if (userRepo.getUserByEmail("admin") == null) {
+			User admin = new User();
+			admin.setEmail("admin");
+			admin.setName("admin");
+			admin.setPassword("admin");
+			admin.setPhone("1234");
+			admin.setRole("ROLE_ADMIN");
+			admin.setStatus("admin");
+			userRepo.save(admin);
+		}
 		
-		// Candidates
-		Candidate candidate1 = new Candidate();
-		candidate1.setId(1);
-		candidate1.setCandidate("candidate1");
-		canRepo.save(candidate1);
+		// Seed candidates if not already present
+		if (canRepo.getCandidateByCandidate("candidate1") == null) {
+			Candidate candidate1 = new Candidate();
+			candidate1.setCandidate("candidate1");
+			canRepo.save(candidate1);
+		}
 		
-		Candidate candidate2 = new Candidate();
-		candidate2.setId(2);
-		candidate2.setCandidate("candidate2");
-		canRepo.save(candidate2);
+		if (canRepo.getCandidateByCandidate("candidate2") == null) {
+			Candidate candidate2 = new Candidate();
+			candidate2.setCandidate("candidate2");
+			canRepo.save(candidate2);
+		}
 		
-		Candidate candidate3 = new Candidate();
-		candidate3.setId(3);
-		candidate3.setCandidate("candidate3");
-		canRepo.save(candidate3);
+		if (canRepo.getCandidateByCandidate("candidate3") == null) {
+			Candidate candidate3 = new Candidate();
+			candidate3.setCandidate("candidate3");
+			canRepo.save(candidate3);
+		}
 		
-		Candidate candidate4 = new Candidate();
-		candidate4.setId(4);
-		candidate4.setCandidate("candidate4");
-		canRepo.save(candidate4);
+		if (canRepo.getCandidateByCandidate("candidate4") == null) {
+			Candidate candidate4 = new Candidate();
+			candidate4.setCandidate("candidate4");
+			canRepo.save(candidate4);
+		}
 		
 	}
 	

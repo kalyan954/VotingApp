@@ -9,10 +9,8 @@
 	
 
 <h1>Admin Dashboard</h1>
-		<div th:if=${session.msg}>
-			<h3 th:text="${session.msg}" style="color:red"></h3>
-   					<h3 th:text="${session.msg}" style="color:red"></h3>
-   		
+		<div th:if="${msg}">
+			<h3 th:text="${msg}" style="color:red"></h3>
    		</div>
    		
    		

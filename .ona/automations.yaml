@@ -23,6 +23,7 @@ tasks:
     description: Download Maven dependencies for the Spring Boot project.
     command: |
       cd MySpring_Boot_aa23v_VotingApp_Final
+      chmod +x mvnw
       ./mvnw dependency:resolve -q
     triggeredBy:
       - postDevcontainerStart
@@ -36,6 +37,7 @@ services:
     commands:
       start: |
         cd MySpring_Boot_aa23v_VotingApp_Final
+        chmod +x mvnw
         ./mvnw spring-boot:run
       ready: |
         curl -sf http://localhost:8080 || curl -sf -o /dev/null -w "%{http_code}" http://localhost:8080 | grep -q "302\|200\|401\|403"
