@@ -47,4 +47,13 @@ public class UserService {
 		}
 		return this.userRepo.getUserByEmail(email);
 	}
+
+	public User getUserByEmailForUpdate(String email)
+	{
+		if (email == null || email.isBlank()) {
+			log.warn("getUserByEmailForUpdate called with null or blank email");
+			return null;
+		}
+		return this.userRepo.getUserByEmailForUpdate(email);
+	}
 }

@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.model.Candidate;
-import com.model.User;
 import com.service.CandidateService;
-import com.service.UserService;
+import com.service.VotingService;
+import com.service.VotingService.VoteResult;
 
 @Controller
 public class CandidateController {
@@ -33,7 +33,7 @@ public class CandidateController {
 	private CandidateService canServ;
 
 	@Autowired
-	private UserService userServ;
+	private VotingService votingServ;
 
 	@GetMapping("/candidates")
 	@ResponseBody
@@ -56,39 +56,23 @@ public class CandidateController {
 			return "redirect:/user";
 		}
 
-		String email = p.getName();
-		User user = userServ.getUserByEmail(email);
-
-		if (user == null) {
-			log.error("Authenticated user not found in database: {}", email);
-			redirectAttributes.addFlashAttribute("vmsg", "Something went wrong...");
-			return "redirect:/user";
-		}
-
-		if (user.getStatus() != null) {
-			return "redirect:/user";
-		}
-
 		try {
-			Candidate selectedCan = canServ.getCandidateByCandidate(candidate);
-			if (selectedCan == null) {
-				redirectAttributes.addFlashAttribute("vmsg", "Invalid candidate.");
-				return "redirect:/user";
+			VoteResult result = votingServ.castVote(p.getName(), candidate);
+
+			switch (result.getStatus()) {
+				case ALREADY_VOTED:
+					break;
+				case ERROR:
+					redirectAttributes.addFlashAttribute("vmsg", result.getMessage());
+					break;
+				case SUCCESS:
+					redirectAttributes.addFlashAttribute("vmsg", result.getMessage());
+					break;
 			}
-
-			selectedCan.setVotes(selectedCan.getVotes() + 1);
-			canServ.addCandidate(selectedCan);
-
-			user.setStatus("Voted");
-			userServ.saveUser(user);
-
-			redirectAttributes.addFlashAttribute("vmsg", "Successfully Voted...");
 		}
-		catch (Exception e)
-		{
-			log.error("Failed to cast vote for user={}, candidate={}", email, candidate, e);
+		catch (Exception e) {
+			log.error("Failed to cast vote for user={}, candidate={}", p.getName(), candidate, e);
 			redirectAttributes.addFlashAttribute("vmsg", "Something went wrong...");
-			return "redirect:/user";
 		}
 
 		return "redirect:/user";
