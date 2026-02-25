@@ -41,6 +41,11 @@ public class CandidateService {
 		return this.canRepo.getNumOfVotes(candidate);
 	}
 
+	public int incrementVotes(String candidate)
+	{
+		return this.canRepo.incrementVotes(candidate);
+	}
+
 	public Candidate getCandidateByCandidate(String candidate)
 	{
 		if (candidate == null || candidate.isBlank()) {
