@@ -55,8 +55,8 @@ public class CandidateController {
 	public String addCandidate(@RequestParam("candidate") String candidate,
 			Principal p, Model model, RedirectAttributes redirectAttributes)
 	{
-		if (candidate == null || candidate.isBlank()) {
-			redirectAttributes.addFlashAttribute("vmsg", "Invalid candidate selection.");
+		if(candidate == null || candidate.trim().isEmpty()) {
+			redirectAttributes.addFlashAttribute("vmsg", "Candidate name cannot be empty.");
 			return "redirect:/user";
 		}
 
